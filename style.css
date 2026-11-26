@@ -319,3 +319,20 @@ button.keybind { min-width: 120px; }
 .rs-ready .rsstate { color: #d6e8ff; }
 .rs-locked td { opacity: .55; }
 .itype { color: #9fc4e8; }
+
+/* ---------- polish: corner brackets, title rule, live sweep on framed panels ---------- */
+.framed .pbody { overflow: visible; }
+.framed:not(.min)::before, .framed:not(.min)::after { content: ''; position: absolute; width: 12px; height: 12px; pointer-events: none;
+  border-color: #8fd0ff; border-style: solid; filter: drop-shadow(0 0 3px rgba(80,170,255,.9)); opacity: .85; }
+.framed:not(.min)::before { right: -3px; top: 14px; border-width: 2px 2px 0 0; }
+.framed:not(.min)::after { left: -3px; bottom: -3px; border-width: 0 0 2px 2px; }
+.ptitle { text-shadow: 0 0 6px rgba(80,170,255,.45); }
+.framed .pbody::after { background:
+  linear-gradient(90deg, transparent, rgba(140,210,255,.06) 45%, rgba(140,210,255,.12) 50%, rgba(140,210,255,.06) 55%, transparent) -200% 0 / 60% 100% no-repeat,
+  repeating-linear-gradient(0deg, rgba(120,190,255,.035) 0 1px, transparent 1px 3px),
+  linear-gradient(180deg, var(--glass-a), var(--glass-b));
+  animation: hudsweep 9s linear infinite; }
+@keyframes hudsweep { 0% { background-position: -200% 0, 0 0, 0 0; } 60%, 100% { background-position: 300% 0, 0 0, 0 0; } }
+@media (prefers-reduced-motion: reduce) { .framed .pbody::after { animation: none; } }
+.dialog h1 { text-shadow: 0 0 10px rgba(255,150,40,.55), 0 0 2px rgba(255,200,120,.8); }
+.dialog h2 { border-bottom: 1px solid rgba(74,160,240,.25); padding-bottom: 3px; }
