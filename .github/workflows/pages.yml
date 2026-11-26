@@ -1,0 +1,46 @@
+# Publishes the game to GitHub Pages on every push: https://robwalsh147.github.io/Starphase-Alpha/
+name: Deploy website
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Assemble site
+        run: |
+          mkdir site
+          cp -r index.html style.css icon.png src node_modules site/
+          touch site/.nojekyll
+      - name: Version + file manifest (used by the in-game updater)
+        run: |
+          node -e "
+            const fs=require('fs'),path=require('path');
+            const v=require('./package.json').version;
+            fs.writeFileSync('site/version.json', JSON.stringify({ build: process.env.GITHUB_SHA.slice(0,7), version: v, date: new Date().toISOString() }));
+            const files=[]; const walk=(d)=>{ for (const f of fs.readdirSync(d,{withFileTypes:true})) { const p=path.join(d,f.name); if (f.isDirectory()) walk(p); else files.push(path.relative('site',p).split(path.sep).join('/')); } };
+            walk('site');
+            fs.writeFileSync('site/manifest.json', JSON.stringify(files.filter(f=>f!=='manifest.json'&&f!=='.nojekyll')));
+          "
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

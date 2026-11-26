@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Starphase Alpha</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="node_modules/@fontsource/syncopate/400.css">
+<link rel="stylesheet" href="node_modules/@fontsource/syncopate/700.css">
+<link rel="stylesheet" href="node_modules/@fontsource/orbitron/400.css">
+<link rel="stylesheet" href="node_modules/@fontsource/orbitron/600.css">
+<link rel="stylesheet" href="node_modules/@fontsource/orbitron/800.css">
+<link rel="stylesheet" href="style.css">
+<script type="importmap">
+{
+  "imports": {
+    "three": "./node_modules/three/build/three.module.js",
+    "three/addons/": "./node_modules/three/examples/jsm/"
+  }
+}
+</script>
+</head>
+<body>
+<div id="titlebar"><span class="tname">STARPHASE &alpha;</span><button id="tb-min" title="Minimize">&#8212;</button><button id="tb-max" title="Maximize">&#9634;</button><button id="tb-close" class="close" title="Close">&#10005;</button></div>
+<div id="game"></div>
+
+<div id="hud">
+  <canvas id="arrows"></canvas>
+
+  <!-- Every .hud-panel is movable / scalable / minimizable (see src/layout.js) -->
+  <div class="hud-panel framed" id="p-stats" data-title="Status">
+    <div class="phead"><button class="mm" title="Minimize">−</button><span class="ptitle">STATUS</span></div>
+    <div class="pbody" style="width:230px">
+      <div class="title">STARPHASE <span class="alpha">α</span></div>
+      <div class="row"><span class="lbl">SYSTEM</span><span id="sysname">—</span></div>
+      <div class="row"><span class="lbl">LEVEL</span><span id="lvl">1</span></div>
+      <div class="bar"><div id="xpbar"></div></div>
+      <div class="row"><span class="lbl">THREAT</span><span id="threat">1.0</span></div>
+      <div class="sep"></div>
+      <div class="row"><span class="lbl">CARGO · UNBANKED</span></div>
+      <div class="row"><span class="lbl">Scrip</span><span id="scrip">0</span></div>
+      <div class="row"><span class="lbl">Ore</span><span id="ore">0</span></div>
+      <div class="row"><span class="lbl">Salvage</span><span id="salvage">0</span></div>
+      <div class="row"><span class="lbl">Hold</span><span id="hold">0/0</span></div>
+      <div class="sep"></div>
+      <div class="row"><span class="lbl">BANKED GAEL</span><span id="gael" class="gael">0</span></div>
+      <div class="row"><span class="lbl">BANKED SCRIP</span><span id="bscrip">0</span></div>
+    </div>
+  </div>
+
+  <div class="hud-panel framed" id="p-radar" data-title="Scanner">
+    <button id="update-badge" class="hidden" title="A new build is out">UPDATE AVAILABLE</button>
+    <div class="phead"><button class="mm" title="Minimize">−</button><span class="ptitle">SCANNER</span></div>
+    <div class="pbody"><canvas id="radar" width="200" height="200"></canvas>
+      <div id="radar-filters"><button data-f="min" title="Minerals / asteroids">MIN</button><button data-f="hos" title="Hostiles">HOS</button><button data-f="npc" title="Neutral ships">NPC</button><button data-f="stn" title="Stations &amp; gates">STN</button><button data-f="plr" title="Other players">PLR</button><button data-f="loot" title="Loot canisters">LOOT</button></div></div>
+  </div>
+
+  <div class="hud-panel" id="p-gauge" data-title="Ship">
+    <div class="phead"><button class="mm" title="Minimize">−</button><span class="ptitle">SHIP STATUS</span></div>
+    <div class="pbody"><canvas id="radial" width="320" height="320"></canvas></div>
+  </div>
+
+  <div class="hud-panel framed" id="p-hotbar" data-title="Modules">
+    <div class="phead"><button class="mm" title="Minimize">−</button><span class="ptitle">MODULES</span></div>
+    <div class="pbody"><div id="hotbar"></div></div>
+  </div>
+
+  <div class="hud-panel" id="p-menu" data-title="Menu">
+    <div class="phead"><button class="mm" title="Minimize">−</button><span class="ptitle">MENU</span></div>
+    <div class="pbody" id="menubtns"><button id="btn-char" title="Character (C)">C<span>Pilot</span></button><button id="btn-inv" title="Inventory (I)">I<span>Hold</span></button><button id="btn-map" title="Map (M)">M<span>Map</span></button></div>
+  </div>
+
+  <div class="hud-panel" id="p-comms" data-title="Comms">
+    <div class="phead"><button class="mm" title="Minimize">−</button><span class="ptitle">COMMS</span></div>
+    <div class="pbody"><div id="comms"></div></div>
+  </div>
+
+  <div class="hud-panel framed" id="p-news" data-title="Jobs">
+    <div class="phead"><button class="mm" title="Minimize">−</button><span class="ptitle">JOBS</span></div>
+    <div class="pbody" id="quests"><div class="dim">No active jobs.</div></div>
+  </div>
+
+  <div id="center-msg"></div>
+  <div id="dock-prompt"></div>
+</div>
+
+<div id="adjust-bar" class="hidden">
+  <span class="atitle">ADJUST UI</span>
+  <span class="ahelp">Drag a panel to move it · drag its corner or scroll over it to scale · − / + to minimize</span>
+  <button id="ui-reset">Reset layout</button>
+  <button id="ui-done">Done (Esc)</button>
+</div>
+
+<div id="mainmenu" class="hidden">
+  <div class="mm-title">STARPHASE <span class="alpha">&alpha;</span></div>
+  <div class="mm-buttons">
+    <button id="mm-play">Play</button>
+    <button id="mm-settings">Settings</button>
+    <button id="mm-ach">Achievements</button>
+    <button id="mm-fame">Hall of Fame</button>
+    <button id="mm-update">Check for updates</button>
+    <button id="mm-quit">Quit</button>
+  </div>
+  <div class="mm-pilot" id="mm-pilot"></div>
+</div>
+<div id="menufade"></div>
+<div id="overlay" class="hidden"></div>
+<div id="update-notes" class="hidden"><button id="un-close" title="Close">✕</button><div id="news"></div></div>
+
+<script type="module" src="src/main.js"></script>
+</body>
+</html>

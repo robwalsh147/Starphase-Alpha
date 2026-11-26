@@ -1,0 +1,23 @@
+{
+  "name": "starphase-alpha",
+  "version": "0.1.0",
+  "description": "Starphase Alpha — isometric space extraction shooter",
+  "scripts": {
+    "start": "python -m http.server 5173 --bind 127.0.0.1",
+    "desktop:package": "node tools/desktop.mjs package"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "UNLICENSED",
+  "type": "commonjs",
+  "dependencies": {
+    "@fontsource/orbitron": "^5.3.0",
+    "@fontsource/syncopate": "^5.3.0",
+    "three": "^0.170.0"
+  },
+  "devDependencies": {
+    "@electron/packager": "^20.3.0",
+    "electron": "^45.5.0"
+  },
+  "private": true
+}
