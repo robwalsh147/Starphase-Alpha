@@ -336,3 +336,32 @@ button.keybind { min-width: 120px; }
 @media (prefers-reduced-motion: reduce) { .framed .pbody::after { animation: none; } }
 .dialog h1 { text-shadow: 0 0 10px rgba(255,150,40,.55), 0 0 2px rgba(255,200,120,.8); }
 .dialog h2 { border-bottom: 1px solid rgba(74,160,240,.25); padding-bottom: 3px; }
+
+/* ---------- touch controls ---------- */
+#touch { position: fixed; inset: 0; z-index: 6; pointer-events: none; touch-action: none; user-select: none; -webkit-user-select: none; }
+#touch .t-zone { position: absolute; left: 0; top: 18%; width: 50%; bottom: 0; pointer-events: auto; touch-action: none; }
+#touch .t-stick { position: absolute; width: 132px; height: 132px; margin: -66px 0 0 -66px; border-radius: 50%; display: none;
+  border: 2px solid rgba(120,190,255,.55); background: radial-gradient(circle, rgba(40,90,160,.25), rgba(10,20,40,.15)); box-shadow: 0 0 14px rgba(60,150,255,.35); }
+#touch .t-stick.on { display: block; }
+#touch .t-knob { position: absolute; left: 50%; top: 50%; width: 56px; height: 56px; border-radius: 50%; transform: translate(-50%, -50%);
+  background: radial-gradient(circle at 40% 35%, rgba(170,220,255,.9), rgba(60,130,220,.75)); box-shadow: 0 0 12px rgba(80,170,255,.7); }
+#touch .t-btn { position: absolute; pointer-events: auto; touch-action: none; border-radius: 50%; font-family: var(--title); font-weight: 700;
+  letter-spacing: 1px; color: #dff0ff; border: 2px solid rgba(120,190,255,.7); background: radial-gradient(circle, rgba(40,80,140,.55), rgba(10,20,40,.55));
+  box-shadow: 0 0 12px rgba(60,150,255,.35); clip-path: none; padding: 0; }
+#touch .t-btn.down { background: radial-gradient(circle, rgba(255,180,80,.75), rgba(120,60,10,.6)); border-color: #ffb648; color: #fff; }
+#touch .t-fire { right: calc(26px + env(safe-area-inset-right)); bottom: calc(150px + env(safe-area-inset-bottom)); width: 96px; height: 96px; font-size: 14px; }
+#touch .t-boost { right: calc(132px + env(safe-area-inset-right)); bottom: calc(130px + env(safe-area-inset-bottom)); width: 68px; height: 68px; font-size: 10px; }
+#touch .t-use { right: calc(40px + env(safe-area-inset-right)); bottom: calc(262px + env(safe-area-inset-bottom)); width: 68px; height: 68px; font-size: 10px; }
+#touch .t-pause { left: 50%; top: calc(8px + env(safe-area-inset-top)); transform: translateX(-50%); width: 44px; height: 44px; font-size: 13px; border-radius: 8px; }
+body.touch #cursor { display: none !important; }
+body.touch #hotbar .slot { cursor: pointer; }
+body.touch .hud-panel .pbody { -webkit-tap-highlight-color: transparent; }
+body.touch:not(.playing) #touch { display: none !important; }
+/* narrow / phone screens: keep the title on screen, menus and dialogs fit */
+.mm-title { font-size: min(calc(54px * var(--ui-scale)), 9vw); }
+@media (max-width: 700px) {
+  .mm-title { top: 22%; letter-spacing: 0.12em; }
+  .mm-buttons { top: 58%; }
+  .dialog { max-width: 96vw !important; max-height: 92vh; overflow: auto; }
+  .fitwrap { flex-direction: column; }
+}
