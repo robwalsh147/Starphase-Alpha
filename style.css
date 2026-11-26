@@ -308,3 +308,13 @@ button.keybind { min-width: 120px; }
 .stmods { flex: 1.6 1 0; }
 .stside { flex: 1 1 0; }
 .slotpick { border: 1px solid var(--edge-dim); padding: 4px; margin: 4px 0; background: rgba(6,16,32,.5); }
+.rstable td { padding: 3px 6px; font-size: 11px; }
+.rstable td:first-child { width: 28px; }
+.rstable .ok { color: #6dff9a; }
+.rstable .no { color: #ff7a6a; }
+.rstable .rsstate { text-align: right; white-space: nowrap; }
+.rs-known td { color: #8fd8a8; }
+.rs-learning .rsstate { color: #ffb648; }
+.rs-queued .rsstate { color: #60d0ff; }
+.rs-ready .rsstate { color: #d6e8ff; }
+.rs-locked td { opacity: .55; }
