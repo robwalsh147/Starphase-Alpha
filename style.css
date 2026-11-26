@@ -365,3 +365,4 @@ body.touch:not(.playing) #touch { display: none !important; }
   .dialog { max-width: 96vw !important; max-height: 92vh; overflow: auto; }
   .fitwrap { flex-direction: column; }
 }
+.goodstable td { padding: 3px 6px; font-size: 11px; } .goodstable .buy { white-space: nowrap; }
