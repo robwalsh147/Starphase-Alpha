@@ -318,3 +318,4 @@ button.keybind { min-width: 120px; }
 .rs-queued .rsstate { color: #60d0ff; }
 .rs-ready .rsstate { color: #d6e8ff; }
 .rs-locked td { opacity: .55; }
+.itype { color: #9fc4e8; }
