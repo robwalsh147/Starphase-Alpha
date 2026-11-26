@@ -24,7 +24,7 @@ const cp = (from, to) => fs.cpSync(path.join(ROOT, from), to, { recursive: true,
 
 // Game files the desktop app needs (kept at the same relative paths as the browser build).
 const GAME_FILES = [
-  'index.html', 'style.css', 'src',
+  'index.html', 'style.css', 'src', 'assets',
   'node_modules/three/build/three.module.js',
   'node_modules/three/examples/jsm',
   'node_modules/@fontsource/syncopate',

@@ -19,7 +19,7 @@ jobs:
       - name: Assemble site
         run: |
           mkdir site
-          cp -r index.html style.css icon.png src node_modules site/
+          cp -r index.html style.css icon.png src assets node_modules site/
           touch site/.nojekyll
       - name: Version + file manifest (used by the in-game updater)
         run: |
