@@ -822,3 +822,27 @@ button.key .kg, button.keybig .kg, #menubtns button.key span { color: var(--g) !
 /* bulge only the terminal text; maps, gauges and the scanner stay true */
 .tscreen .screen > *:not(.crt-skip) { filter: none; }
 #comms, #comms-prompt { filter: url(#crtbulge); }
+
+/* stronger CRT curve: pillowed corners, edges falling off into shadow, a curved band of reflection across the top */
+.tscreen .screen { border-radius: 38px / 46px; box-shadow: inset 0 0 26px 12px rgba(0,0,0,.88), inset 0 0 90px rgba(0,0,0,.5); }
+.tscreen .screen::before { background:
+    repeating-linear-gradient(0deg, rgba(0,0,0,.32) 0 1px, rgba(0,0,0,0) 1px 3px),
+    radial-gradient(ellipse 62% 58% at 50% 50%, transparent 55%, rgba(0,0,0,.75) 100%),
+    url(assets/ui/glass_grime.png) center / cover; }
+.tscreen .screen::after { background:
+    radial-gradient(circle at var(--gx, 30%) var(--gy, 22%), rgba(255,255,245,.38) 0, rgba(255,255,240,.08) 1.6%, transparent 3.6%),
+    radial-gradient(ellipse 95% 38% at 50% 2%, rgba(225,240,235,.10), transparent 72%),
+    radial-gradient(ellipse 70% 30% at 50% 102%, rgba(0,0,0,.4), transparent 70%); }
+
+/* gauge screen sized so the rings sit inside the curved glass */
+.gauge-screen { width: 300px; height: 300px; }
+#status-screen { display: flex; align-items: center; justify-content: center; }
+#status-screen canvas { width: 240px; height: 240px; margin: 0; }
+/* ammo dry: a lamp in the bezel fades from black up to red and back, 2 s per loop */
+.bez-led { position: absolute; z-index: 7; right: 22px; bottom: 4px; width: 9px; height: 9px; border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, #3a1410, #120504 70%); box-shadow: inset 0 1px 1px rgba(0,0,0,.8), 0 0 0 1px rgba(0,0,0,.5); }
+.bez-led.on { animation: ammoled 2s ease-in-out infinite; }
+@keyframes ammoled {
+  0%, 100% { background: radial-gradient(circle at 40% 35%, #3a1410, #120504 70%); box-shadow: inset 0 1px 1px rgba(0,0,0,.8), 0 0 0 1px rgba(0,0,0,.5); }
+  50% { background: radial-gradient(circle at 40% 35%, #ffb0a0, #ff2a14 55%, #8a0c04 90%); box-shadow: 0 0 8px 2px rgba(255,40,20,.85), 0 0 18px rgba(255,30,10,.5); }
+}
