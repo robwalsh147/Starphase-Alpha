@@ -369,3 +369,9 @@ body.touch:not(.playing) #touch { display: none !important; }
 #touch .t-cruise { right: calc(132px + env(safe-area-inset-right)); bottom: calc(222px + env(safe-area-inset-bottom)); width: 60px; height: 60px; font-size: calc(9px * var(--fs, 1)); }
 .fitbar { font-size: calc(10px * var(--fs, 1)); margin: 2px 0 4px; } .fitbar .progress { height: 5px; }
 #touch .t-scan { right: calc(200px + env(safe-area-inset-right)); bottom: calc(222px + env(safe-area-inset-bottom)); width: 56px; height: 56px; font-size: calc(9px * var(--fs, 1)); }
+
+/* dialogs are zoomed by --ui-scale, so size limits must be divided by it or they spill off screen and can't scroll */
+.dialog { max-width: calc(94vw / var(--ui-scale, 1)); max-height: calc(92vh / var(--ui-scale, 1)); }
+.dialog.dockdlg { max-width: calc(96vw / var(--ui-scale, 1)); height: calc(82vh / var(--ui-scale, 1)); max-height: calc(82vh / var(--ui-scale, 1)); }
+.tabbody { max-height: calc(58vh / var(--ui-scale, 1)); }
+#overlay { overflow: auto; }
