@@ -512,3 +512,12 @@ body.ui-adjust .hud-panel.sel { outline: 2px solid var(--amber); }
 #hotbar .slot.active .icon { opacity: .9; filter: grayscale(1) brightness(0); }
 #hotbar .slot .cd { left: 12%; top: auto; bottom: 12%; width: 76%; max-height: 76%; background: rgba(10,8,5,.55); }
 #hotbar .slot.empty .icon { opacity: 0; }
+
+/* main console: one housing — switches | (menu keys over module tiles) */
+.console { display: flex; align-items: center; gap: 14px; }
+.console #toggles { display: flex; gap: 10px; padding-right: 12px; border-right: 2px solid rgba(0,0,0,.45); box-shadow: 1px 0 0 rgba(255,240,200,.08); }
+.console .c-right { display: flex; flex-direction: column; gap: 4px; }
+.console #menubtns { display: flex; gap: 2px; }
+#menubtns button.key, #menubtns button.key:hover { width: 46px; height: 46px; padding: 0; border: none; background: url(assets/ui/key_up.png) center / 100% 100% no-repeat; }
+#menubtns button.key:active { background-image: url(assets/ui/key_down.png); }
+#menubtns button.key .kg { font-size: 13px; }
