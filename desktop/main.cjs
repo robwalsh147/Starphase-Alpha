@@ -69,6 +69,7 @@ function createWindow() {
       contextIsolation: true,
       sandbox: true,
       backgroundThrottling: false,
+      autoplayPolicy: 'no-user-gesture-required',   // the boot jingle plays on launch
     },
   });
   win.setMenu(null);
