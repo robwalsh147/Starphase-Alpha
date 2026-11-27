@@ -83,7 +83,11 @@
 
 <div id="adjust-bar" class="hidden">
   <span class="atitle">ADJUST UI</span>
-  <span class="ahelp">Drag a panel to move it · drag its corner or scroll over it to scale · − / + to minimize</span>
+  <span class="ahelp">Drag to move · corner: stretch (Shift = keep shape) · wheel: scale · click a panel to edit exact values</span>
+  <span id="ui-edit"><b id="ui-sel">—</b>
+    X <input id="ui-x" type="number" step="1"> Y <input id="ui-y" type="number" step="1">
+    W% <input id="ui-w" type="number" step="1"> H% <input id="ui-h" type="number" step="1"> Z <input id="ui-z" type="number" step="1"></span>
+  <button id="ui-copy">Copy layout</button>
   <button id="ui-reset">Reset layout</button>
   <button id="ui-done">Done (Esc)</button>
 </div>

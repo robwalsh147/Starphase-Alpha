@@ -495,3 +495,20 @@ button.key.notify .kg { animation: blink 1s steps(1) infinite; opacity: 1; }
   font-size: 0; color: transparent; text-shadow: none; background: radial-gradient(circle, rgba(255,90,60,1) 0 28%, rgba(255,60,30,.85) 45%, rgba(255,40,0,0) 72%);
   animation: notelamp .8s steps(1) infinite; }
 .comms-unit #update-badge:hover { background: radial-gradient(circle, rgba(255,140,110,1) 0 30%, rgba(255,60,30,.9) 50%, rgba(255,40,0,0) 74%); }
+
+/* adjust mode: exact-value editor */
+#adjust-bar { flex-wrap: wrap; max-width: 96vw; }
+#ui-edit { display: flex; align-items: center; gap: 4px; color: #ffd890; font-size: 11px; }
+#ui-edit input { width: 58px; padding: 3px 4px; font: 11px var(--ui); color: var(--ph); background: #000; border: 1px solid rgba(255,176,0,.5); }
+#ui-edit b { color: var(--amber); font-weight: 400; margin-right: 6px; min-width: 70px; }
+body.ui-adjust .hud-panel.sel { outline: 2px solid var(--amber); }
+
+/* module keys 1–0: flat white backlit keypad tiles with dark printed pictograms (lit when active) */
+#hotbar { gap: 0; }
+#hotbar .slot { width: 66px; height: 66px; background: url(assets/ui/tile_off.png) center / 100% 100% no-repeat; }
+#hotbar .slot.active { background-image: url(assets/ui/tile_lit.png); filter: drop-shadow(0 0 6px rgba(255,220,160,.35)); }
+#hotbar .slot .icon { left: 18%; top: 18%; width: 64%; height: 64%; font-size: 22px; opacity: .78;
+  filter: grayscale(1) brightness(0) drop-shadow(0 0 .5px rgba(40,30,20,.6)); }
+#hotbar .slot.active .icon { opacity: .9; filter: grayscale(1) brightness(0); }
+#hotbar .slot .cd { left: 12%; top: auto; bottom: 12%; width: 76%; max-height: 76%; background: rgba(10,8,5,.55); }
+#hotbar .slot.empty .icon { opacity: 0; }
