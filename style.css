@@ -671,3 +671,139 @@ button.keybig.down { background-image: url(assets/ui/keybig_down.png) !important
 .tbez > .lyr.litT { border-image: url(assets/ui/frame9_T.png) 12 / 7px stretch; }
 .tbez > .lyr.litB { border-image: url(assets/ui/frame9_B.png) 12 / 7px stretch; }
 .tbez { filter: none; }
+
+/* =====================================================================================
+   CRT SCREENS (v0.53): sloped eggshell surround (assets/ui/crt9.png, sunlit layers), pillowed glass with
+   rounded corners, content bulged by an SVG displacement filter, phosphor glow, scanlines, dark edges.
+   ===================================================================================== */
+.tbez { border-width: 18px; border-image: url(assets/ui/crt9.png) 30 / 18px stretch; }
+.tbez > .lyr { inset: -18px; border-width: 18px; }
+.tbez > .lyr.litL { border-image: url(assets/ui/crt9_L.png) 30 / 18px stretch; }
+.tbez > .lyr.litR { border-image: url(assets/ui/crt9_R.png) 30 / 18px stretch; }
+.tbez > .lyr.litT { border-image: url(assets/ui/crt9_T.png) 30 / 18px stretch; }
+.tbez > .lyr.litB { border-image: url(assets/ui/crt9_B.png) 30 / 18px stretch; }
+.tscreen .screen { inset: 14px; border-radius: 22px / 26px; overflow: hidden;
+  background: radial-gradient(ellipse 70% 65% at 50% 48%, #12271d 0%, #0b1913 45%, #06100b 75%, #020604 100%);
+  box-shadow: inset 0 0 22px 8px rgba(0,0,0,.8), inset 0 0 70px rgba(0,0,0,.45); }
+.tscreen .screen.phos-cyan { background: radial-gradient(ellipse 70% 65% at 50% 48%, #0e2328 0%, #08171b 45%, #040c0f 75%, #010405 100%); }
+.tscreen .screen > *:not(.crt-skip) { filter: url(#crtbulge); }
+.tscreen .screen { text-shadow: 0 0 5px var(--phos), 0 0 1px var(--phos); }
+/* glass: fine scanlines + dark curved edges, then a broad curved reflection and the sun pip */
+.tscreen .screen::before { border-radius: inherit; opacity: 1; background:
+    repeating-linear-gradient(0deg, rgba(0,0,0,.32) 0 1px, rgba(0,0,0,0) 1px 3px),
+    radial-gradient(ellipse 75% 70% at 50% 50%, transparent 60%, rgba(0,0,0,.55) 100%),
+    url(assets/ui/glass_grime.png) center / cover; }
+.tscreen .screen::after { inset: 0; border-radius: inherit; mix-blend-mode: screen; background:
+    radial-gradient(circle at var(--gx, 30%) var(--gy, 22%), rgba(255,255,245,.4) 0, rgba(255,255,240,.1) 1.6%, transparent 3.6%),
+    radial-gradient(ellipse 85% 55% at calc(var(--gx, 30%) * .6 + 12%) 0%, rgba(230,245,240,.09), transparent 70%),
+    linear-gradient(165deg, rgba(255,255,255,.05) 0%, transparent 35%); }
+.gauge-screen { width: 268px; height: 268px; }
+#status-screen canvas { margin: 0 auto; }
+.comms-screen { width: 400px; height: 240px; }
+.scan-screen { width: 620px; height: 420px; }
+
+/* console / key panels: rendered eggshell plate (9-slice, sunlit layers) */
+.tpanel { background: none; border-style: solid; border-width: 20px; border-color: transparent; border-image: url(assets/ui/plate9.png) 40 fill / 20px stretch; padding: 0; }
+.tpanel > .lyr { inset: -20px; border-style: solid; border-width: 20px; border-color: transparent; background: none; }
+.tpanel > .lyr.litL { border-image: url(assets/ui/plate9_L.png) 40 fill / 20px stretch; }
+.tpanel > .lyr.litR { border-image: url(assets/ui/plate9_R.png) 40 fill / 20px stretch; }
+.tpanel > .lyr.litT { border-image: url(assets/ui/plate9_T.png) 40 fill / 20px stretch; }
+.tpanel > .lyr.litB { border-image: url(assets/ui/plate9_B.png) 40 fill / 20px stretch; }
+.tpanel > :not(.lyr) { position: relative; z-index: 1; }
+.console #toggles { border-right: 2px solid rgba(0,0,0,.35); box-shadow: 1px 0 0 rgba(255,250,235,.25); }
+
+/* =====================================================================================
+   IBM 5150 / 5151 TEXT MODE (v0.53, DESIGN_RULES §1b): every screen is green phosphor text mode.
+   Box-drawn panels (double rule) with titles cut into the rule, [ BUTTONS ] that flip to inverse video,
+   uppercase monospace, dotted read-out rows. One green only; emphasis = inverse video or blink.
+   ===================================================================================== */
+:root {
+  --ui: 'Consolas', 'Lucida Console', 'Courier New', monospace;
+  --g: #8dffa8; --gd: #3c8f57; --gb: #c9ffd6; --ink: #010703;
+  --amber: var(--g); --red: var(--g); --ph: var(--gb); --ph2: var(--g); --text: var(--g); --muted: var(--gd);
+  --edge: var(--g); --edge-dim: rgba(141,255,168,.45); --faint: rgba(141,255,168,.18);
+  --glow: 0 0 4px rgba(141,255,168,.55);
+}
+#overlay { background: radial-gradient(ellipse at center, rgba(2,14,6,.82), rgba(0,0,0,.94)); }
+#overlay .dialog, .dialog, #update-notes { font-family: var(--ui); font-weight: 700; text-transform: uppercase; letter-spacing: .5px;
+  color: var(--g); background: var(--ink); border: 5px double var(--g); border-radius: 0; box-shadow: 0 0 18px rgba(141,255,168,.18), inset 0 0 40px rgba(141,255,168,.05); }
+.dialog::before { display: none !important; }
+.dialog * { text-shadow: var(--glow); }
+/* titles cut into the rule:  ═════ TITLE ═════  and  ───── SECTION ───── */
+.dialog h1 { display: flex; align-items: center; gap: 12px; margin: 0 0 10px; padding: 0; border: none; font: 700 16px var(--ui); letter-spacing: 3px; color: var(--gb); }
+.dialog h1::before, .dialog h1::after { content: ''; flex: 1; border-top: 5px double var(--g); }
+.dialog h1.logo { font-size: 18px; letter-spacing: 6px; background: none; -webkit-text-fill-color: var(--gb); filter: none; }
+.dialog h2 { display: flex; align-items: center; gap: 10px; border: none; padding: 0; margin: 14px 0 6px; font: 700 12px var(--ui); letter-spacing: 2px; color: var(--g); }
+.dialog h2::before { content: '' !important; flex: 0 0 14px; border-top: 2px solid var(--g); }
+.dialog h2::after { content: ''; flex: 1; border-top: 2px solid var(--g); }
+.dialog p, .dialog .quip, .dim, .dialog .dim { color: var(--gd); font-style: normal; }
+.dialog b, .dialog strong { color: var(--gb); }
+/* [ BUTTONS ]: plain text in brackets; hover / selected = inverse video */
+button, button.blue, button.small, button.opt, button.tab, button.dmi, button.fac, #menubtns button:not(.key) {
+  font: 700 12px var(--ui); letter-spacing: 1px; text-transform: uppercase; color: var(--g); background: transparent; border: none; border-radius: 0;
+  padding: 2px 6px; clip-path: none; text-shadow: var(--glow); box-shadow: none; }
+#overlay button:not(.key):not(.keybig)::before, #update-notes #un-close::before { content: '[ '; }
+#overlay button:not(.key):not(.keybig)::after, #update-notes #un-close::after { content: ' ]'; }
+button:hover, button.blue:hover, button.opt:hover, button.tab:hover, button.dmi:hover, button.fac:hover,
+button.on, button.opt.on, button.tab.on, button.dmi.on, button.fac.on, .card.cardon, .charrow.cardon {
+  color: var(--ink) !important; background: var(--g) !important; text-shadow: none !important; }
+button:disabled, button:disabled:hover { opacity: .4; color: var(--g) !important; background: transparent !important; }
+/* panels / cards: single-line boxes */
+.card, .stinfo, .wdetail, .slotpick, .fitrow, .setrow, .wcell, .facgrid button.fac { border-radius: 0; background: transparent; }
+.card, .stinfo, .wdetail, .slotpick { border: 2px solid var(--g); }
+.card:hover { background: rgba(141,255,168,.08); border-color: var(--gb); }
+.card .cname { color: var(--gb); } .card .ctag, .card .cflav { color: var(--gd); font-style: normal; }
+.card .cdesc { color: var(--g); }
+.wcell { border: 1px solid var(--gd); } .wcell.sel { box-shadow: none; background: var(--g); color: var(--ink); }
+/* read-out rows: label ........ value */
+table.ledger td, .setrow, .fitrow { border-bottom: none; }
+table.ledger td:first-child, .setlbl { background: linear-gradient(90deg, transparent, transparent) ; }
+table.ledger td:last-child { color: var(--gb); }
+table.ledger tr td:first-child::after { content: ' ' attr(data-dots); }
+.fitrow, .setrow { background-image: radial-gradient(circle, var(--gd) 1px, transparent 1.2px); background-size: 8px 3px; background-repeat: repeat-x; background-position: 0 calc(100% - 4px); }
+.progress, .bar { background: transparent; border: 2px solid var(--g); }
+.progress > div, #xpbar { background: repeating-linear-gradient(90deg, var(--g) 0 8px, transparent 8px 10px); box-shadow: none; }
+input[type=text], select { font: 700 13px var(--ui); color: var(--gb); background: var(--ink); border: none; border-bottom: 2px solid var(--g); text-transform: uppercase; caret-color: var(--g); }
+.tag { color: var(--ink); background: var(--g); }
+.fdot { display: none; }
+.keys b { color: var(--gb); }
+.dialog .itype, .rstable .rsstate, .rs-learning .rsstate, .rs-queued .rsstate { color: var(--g); }
+::-webkit-scrollbar-thumb { background: var(--g); } ::-webkit-scrollbar-track { background: #021006; }
+/* main menu as a text-mode screen */
+.mm-title { font-family: var(--ui); font-weight: 700; letter-spacing: .6em; color: var(--gb); text-shadow: 0 0 10px rgba(141,255,168,.6); }
+.mm-title .alpha { color: var(--gb); }
+.mm-title::after { color: var(--gd); font-family: var(--ui); }
+.mm-buttons button { font: 700 14px var(--ui); color: var(--g); border-left: none; }
+.mm-buttons button::before { content: '  ' !important; opacity: 1 !important; color: inherit !important; position: static; }
+.mm-buttons button:hover::before { content: '\25BA ' !important; }
+.mm-pilot, .mm-pilot::before, .mm-pilot::after, #mainmenu::after { color: var(--gd); font-family: var(--ui); }
+/* in-flight screens: one green */
+.screen, .screen.phos-green, .screen.phos-cyan, .screen.phos-amber { --phos: var(--g); }
+.tscreen .screen.phos-cyan { background: radial-gradient(ellipse 70% 65% at 50% 48%, #12271d 0%, #0b1913 45%, #06100b 75%, #020604 100%); }
+#comms .msg, #comms .msg.warn, #comms .msg.loot, #comms .msg.warn .who { color: var(--g); font-family: var(--ui); font-weight: 700; white-space: normal; overflow-wrap: anywhere; }
+#comms .msg.warn { animation: blink 1s steps(1) 3; }
+#comms { width: 100%; }
+#comms-prompt b { background: var(--g); color: var(--ink); }
+#scan-screen input { border-bottom-color: var(--g); color: var(--gb); }
+button.key .kg, button.keybig .kg, #menubtns button.key span { color: var(--g) !important; text-shadow: 0 0 6px rgba(141,255,168,.9) !important; font-family: var(--ui); font-weight: 700; }
+.tgl.on .tlamp { filter: hue-rotate(85deg) saturate(1.3) drop-shadow(0 0 6px rgba(120,255,150,.9)); animation: lampon .45s steps(1) 1; }
+.note-lamp.on, .comms-screen .note-lamp.on { background: var(--g) !important; box-shadow: 0 0 6px var(--g) !important; }
+#adjust-bar { background: var(--ink); border: 3px double var(--g); }
+#adjust-bar .atitle, #ui-edit, #ui-edit b, #adjust-bar .ahelp { color: var(--g); font-family: var(--ui); }
+#ui-edit input { color: var(--gb); border: 1px solid var(--g); }
+#fps { color: var(--g); }
+#cursor { filter: drop-shadow(0 0 3px rgba(141,255,168,.9)); }
+#update-notes { width: 340px; }
+#news .newsv { color: var(--gb); }
+#comms .msg .who .garble { text-shadow: 1px 0 rgba(141,255,168,.6), -1px 0 rgba(60,180,90,.6); }
+.tpanel > .lyr.litL { opacity: calc(var(--lL, 0) * 1.7); } .tpanel > .lyr.litR { opacity: calc(var(--lR, 0) * 1.7); }
+.tpanel > .lyr.litT { opacity: calc(var(--lT, 0) * 1.7); } .tpanel > .lyr.litB { opacity: calc(var(--lB, 0) * 1.7); }
+.tpanel > .lyr, .tbez > .lyr { position: absolute !important; z-index: 0 !important; }
+
+/* padded console wall: cushions tile (round) instead of stretching */
+.tpanel { border-width: 26px; border-image: url(assets/ui/plate9.png) 40 fill / 26px round; }
+.tpanel > .lyr { inset: -26px; border-width: 26px; }
+.tpanel > .lyr.litL { border-image: url(assets/ui/plate9_L.png) 40 fill / 26px round; }
+.tpanel > .lyr.litR { border-image: url(assets/ui/plate9_R.png) 40 fill / 26px round; }
+.tpanel > .lyr.litT { border-image: url(assets/ui/plate9_T.png) 40 fill / 26px round; }
+.tpanel > .lyr.litB { border-image: url(assets/ui/plate9_B.png) 40 fill / 26px round; }
