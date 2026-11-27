@@ -27,57 +27,54 @@
 <div id="hud">
   <canvas id="arrows"></canvas>
 
-  <!-- Every .hud-panel is movable / scalable / minimizable (see src/layout.js) -->
-  <div class="hud-panel framed" id="p-stats" data-title="Status">
-    <div class="phead"><button class="mm" title="Minimize">−</button><span class="ptitle">STATUS</span></div>
-    <div class="pbody" style="width:230px">
-      <div class="title">STARPHASE <span class="alpha">α</span></div>
-      <div class="row"><span class="lbl">SYSTEM</span><span id="sysname">—</span></div>
-      <div class="row"><span class="lbl">LEVEL</span><span id="lvl">1</span></div>
-      <div class="bar"><div id="xpbar"></div></div>
-      <div class="row"><span class="lbl">THREAT</span><span id="threat">1.0</span></div>
-      <div class="sep"></div>
-      <div class="row"><span class="lbl">CARGO · UNBANKED</span></div>
-      <div class="row"><span class="lbl">Scrip</span><span id="scrip">0</span></div>
-      <div class="row"><span class="lbl">Ore</span><span id="ore">0</span></div>
-      <div class="row"><span class="lbl">Salvage</span><span id="salvage">0</span></div>
-      <div class="row"><span class="lbl">Hold</span><span id="hold">0/0</span></div>
-      <div class="sep"></div>
-      <div class="row"><span class="lbl">BANKED GAEL</span><span id="gael" class="gael">0</span></div>
-      <div class="row"><span class="lbl">BANKED SCRIP</span><span id="bscrip">0</span></div>
+  <!-- HUD hardware: shells are Blender renders (tools/blender/ui_kit.py); screens are live HTML under the glass.
+       Every .hud-panel is movable / scalable in Adjust UI (src/layout.js). No labels on anything. -->
+  <div class="hud-panel" id="p-comms" data-title="Comms">
+    <button class="mm" title="Minimize">−</button>
+    <div class="pbody unit comms-unit">
+      <div class="screen phos-green" id="comms-screen"><div id="comms"></div></div>
+      <img class="shell" src="assets/ui/comms_unit.png" alt="" draggable="false">
+      <div class="note-lamp" id="note-lamp" title=""></div>
+      <button id="update-badge" class="hidden"></button>
     </div>
   </div>
 
-  <div class="hud-panel framed" id="p-radar" data-title="Scanner">
-    <button id="update-badge" class="hidden" title="A new build is out">UPDATE AVAILABLE</button>
-    <div class="phead"><button class="mm" title="Minimize">−</button><span class="ptitle">SCANNER</span></div>
-    <div class="pbody"><canvas id="radar" width="200" height="200"></canvas>
-      <div id="radar-filters"><button data-f="min" title="Minerals / asteroids">MIN</button><button data-f="hos" title="Hostiles">HOS</button><button data-f="npc" title="Neutral ships">NPC</button><button data-f="stn" title="Stations &amp; gates">STN</button><button data-f="plr" title="Other players">PLR</button><button data-f="loot" title="Loot canisters">LOOT</button></div></div>
-  </div>
-
   <div class="hud-panel" id="p-gauge" data-title="Ship">
-    <div class="phead"><button class="mm" title="Minimize">−</button><span class="ptitle">SHIP STATUS</span></div>
-    <div class="pbody"><canvas id="radial" width="320" height="320"></canvas></div>
-  </div>
-
-  <div class="hud-panel framed" id="p-hotbar" data-title="Modules">
-    <div class="phead"><button class="mm" title="Minimize">−</button><span class="ptitle">MODULES</span></div>
-    <div class="pbody"><div id="hotbar"></div></div>
+    <button class="mm" title="Minimize">−</button>
+    <div class="pbody unit status-unit">
+      <div class="screen phos-green" id="status-screen">
+        <div class="sbar" data-k="shield" data-icon="&#9960;"><div class="strack"><div class="sfill"></div></div><span class="sval"></span></div>
+        <div class="sbar" data-k="armor" data-icon="&#9638;"><div class="strack"><div class="sfill"></div></div><span class="sval"></span></div>
+        <div class="sbar" data-k="hull" data-icon="&#11042;"><div class="strack"><div class="sfill"></div></div><span class="sval"></span></div>
+        <div class="sbar" data-k="power" data-icon="&#989;"><div class="strack"><div class="sfill"></div></div><span class="sval"></span></div>
+      </div>
+      <img class="shell" src="assets/ui/status_unit.png" alt="" draggable="false">
+    </div>
   </div>
 
   <div class="hud-panel" id="p-menu" data-title="Menu">
-    <div class="phead"><button class="mm" title="Minimize">−</button><span class="ptitle">MENU</span></div>
-    <div class="pbody" id="menubtns"><button id="btn-char" title="Character (C)">C<span>Pilot</span></button><button id="btn-inv" title="Inventory (I)">I<span>Hold</span></button><button id="btn-map" title="Map (M)">M<span>Map</span></button></div>
+    <button class="mm" title="Minimize">−</button>
+    <div class="pbody strip" id="menubtns">
+      <button class="key" id="btn-status"><span class="kg">&#8801;</span></button>
+      <button class="key" id="btn-char"><span class="kg">C</span></button>
+      <button class="key" id="btn-inv"><span class="kg">I</span></button>
+      <button class="key" id="btn-map"><span class="kg">M</span></button>
+      <button class="key" id="btn-jobs"><span class="kg">J</span></button>
+      <button class="key" id="btn-scan"><span class="kg">R</span></button>
+    </div>
   </div>
 
-  <div class="hud-panel" id="p-comms" data-title="Comms">
-    <div class="phead"><button class="mm" title="Minimize">−</button><span class="ptitle">COMMS</span></div>
-    <div class="pbody"><div id="comms"></div></div>
+  <div class="hud-panel" id="p-toggles" data-title="Toggles">
+    <button class="mm" title="Minimize">−</button>
+    <div class="pbody strip" id="toggles">
+      <div class="tgl" id="tgl-ping"><div class="tlamp"></div><div class="tsw"></div></div>
+      <div class="tgl" id="tgl-light"><div class="tlamp"></div><div class="tsw"></div></div>
+    </div>
   </div>
 
-  <div class="hud-panel framed" id="p-news" data-title="Jobs">
-    <div class="phead"><button class="mm" title="Minimize">−</button><span class="ptitle">JOBS</span></div>
-    <div class="pbody" id="quests"><div class="dim">No active jobs.</div></div>
+  <div class="hud-panel" id="p-hotbar" data-title="Modules">
+    <button class="mm" title="Minimize">−</button>
+    <div class="pbody strip"><div id="hotbar"></div></div>
   </div>
 
   <div id="center-msg"></div>

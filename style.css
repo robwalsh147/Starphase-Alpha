@@ -375,3 +375,123 @@ body.touch:not(.playing) #touch { display: none !important; }
 .dialog.dockdlg { max-width: calc(96vw / var(--ui-scale, 1)); height: calc(82vh / var(--ui-scale, 1)); max-height: calc(82vh / var(--ui-scale, 1)); }
 .tabbody { max-height: calc(58vh / var(--ui-scale, 1)); }
 #overlay { overflow: auto; }
+
+/* =====================================================================================
+   HUD HARDWARE (v0.49): Blender-rendered shells (assets/ui) over live HTML screens.
+   Glossy CRT glass: dust/smudge layer + a specular glint that moves with the ship's heading
+   (--gx / --gy set every frame). No labels anywhere on the HUD.
+   ===================================================================================== */
+#crt { display: none; }
+body.menu #crt, body.overlay-open #crt { display: block; }
+
+.hud-panel { filter: drop-shadow(0 6px 10px rgba(0,0,0,.7)); }
+.hud-panel > .mm { position: absolute; left: -6px; top: -6px; z-index: 5; display: none; }
+body.ui-adjust .hud-panel > .mm { display: block; }
+.hud-panel.min .pbody { display: block !important; opacity: .18; }
+
+.unit { position: relative; }
+.unit .shell { position: relative; z-index: 2; display: block; pointer-events: none; user-select: none; }
+.screen { position: absolute; z-index: 1; overflow: hidden; background: radial-gradient(ellipse at 50% 45%, #061008, #010302 75%);
+  --phos: #8dffa8; color: var(--phos); text-shadow: 0 0 4px var(--phos), 0 0 1px var(--phos); font-family: var(--ui); }
+.screen.phos-green { --phos: #8dffa8; }
+.screen.phos-cyan { --phos: #8ff0ff; background: radial-gradient(ellipse at 50% 45%, #04101a, #010305 75%); }
+.screen.phos-amber { --phos: #ffbe48; background: radial-gradient(ellipse at 50% 45%, #140c02, #030200 75%); }
+/* glass: dust + scanlines + curvature shading, then the moving specular pip */
+.screen::before { content: ''; position: absolute; inset: 0; z-index: 3; pointer-events: none;
+  background: url(assets/ui/glass_grime.png) center / cover,
+    repeating-linear-gradient(0deg, rgba(0,0,0,.28) 0 1px, transparent 1px 3px),
+    radial-gradient(ellipse at 50% 50%, transparent 55%, rgba(0,0,0,.55) 100%);
+  opacity: .75; }
+.screen::after { content: ''; position: absolute; inset: -20%; z-index: 4; pointer-events: none; mix-blend-mode: screen;
+  background:
+    radial-gradient(circle at var(--gx, 30%) var(--gy, 22%), rgba(255,255,245,.55) 0, rgba(255,255,240,.18) 2.2%, transparent 5%),
+    radial-gradient(ellipse 60% 40% at var(--gx, 30%) var(--gy, 22%), rgba(220,235,230,.12), transparent 70%),
+    linear-gradient(160deg, rgba(255,255,255,.06), transparent 40%); }
+
+/* ---- ship status: four bars, one number each; hover shows the pictogram ---- */
+.status-unit { width: 520px; height: 200px; }
+#status-screen { left: 32px; top: 34px; width: 456px; height: 132px; padding: 14px 18px 0 20px; display: flex; flex-direction: column; gap: 9px; }
+.sbar { position: relative; display: flex; align-items: center; gap: 12px; height: 20px; pointer-events: auto; }
+.sbar .strack { flex: 1; height: 14px; border: 1px solid rgba(141,255,168,.3); padding: 2px; }
+.sbar .sfill { height: 100%; width: 100%; background: repeating-linear-gradient(90deg, var(--bar) 0 7px, transparent 7px 9px);
+  box-shadow: 0 0 6px var(--bar); transition: width .15s; }
+.sbar .sval { width: 54px; text-align: right; font-size: 17px; color: var(--bar); text-shadow: 0 0 5px var(--bar); }
+.sbar[data-k=shield] { --bar: #9fffe0; } .sbar[data-k=armor] { --bar: #ffc040; } .sbar[data-k=hull] { --bar: #8dffa8; } .sbar[data-k=power] { --bar: #e6f2da; }
+.sbar.low { --bar: #ff4a36; animation: blink .5s steps(1) infinite; }
+.sbar.empty .strack { border-color: rgba(255,74,54,.6); }
+.sbar:hover::after { content: attr(data-icon); position: absolute; left: -2px; top: -26px; z-index: 6; padding: 1px 7px; font-size: 18px;
+  color: var(--bar); background: #010302; border: 1px solid rgba(141,255,168,.4); }
+
+/* ---- comms: portable terminal, rare translated feed ---- */
+.comms-unit { width: 560px; height: 380px; }
+#comms-screen { left: 44px; top: 40px; width: 360px; height: 212px; padding: 12px 14px; }
+#comms { width: auto; min-height: 0; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; gap: 6px; }
+#comms .msg { margin: 0; padding: 0; background: none; border: none; clip-path: none; font-size: 12px; line-height: 1.35; text-transform: uppercase; letter-spacing: .5px; color: var(--phos); animation: none; }
+#comms .msg .who { display: block; color: var(--phos); opacity: .7; font-size: 10px; letter-spacing: 2px; margin: 0; }
+#comms .msg .who::before { content: '\25C2 RX \00B7 '; color: inherit; }
+#comms .msg.warn { color: #ffb030; } #comms .msg.warn .who { color: #ffb030; }
+#comms .msg b { font-weight: 400; text-decoration: underline; }
+.note-lamp { position: absolute; z-index: 3; left: 481px; top: 184px; width: 22px; height: 22px; border-radius: 50%; pointer-events: auto; cursor: pointer; }
+.note-lamp.on { background: radial-gradient(circle, rgba(255,200,90,1) 0 28%, rgba(255,150,30,.85) 45%, rgba(255,120,0,0) 72%); animation: notelamp 1.1s steps(1) infinite; }
+@keyframes notelamp { 0%, 55% { opacity: 1; } 56%, 100% { opacity: .15; } }
+
+/* ---- console strips (9-slice render) ---- */
+.strip { display: flex; gap: 6px; align-items: center; padding: 16px 20px; border-style: solid; border-width: 30px; border-color: transparent;
+  border-image: url(assets/ui/strip.png) 40 fill / 30px stretch; padding: 0; }
+
+/* ---- keys: rendered keycaps; glyph glows in the cap window ---- */
+button.key { pointer-events: auto; position: relative; width: 70px; height: 70px; padding: 0; border: none; background: url(assets/ui/key_up.png) center / 100% 100% no-repeat;
+  clip-path: none; text-shadow: none; letter-spacing: 0; }
+button.key:hover { color: inherit; background: url(assets/ui/key_up.png) center / 100% 100% no-repeat; filter: brightness(1.08); }
+button.key:active, button.key.down { background-image: url(assets/ui/key_down.png); }
+button.key .kg { position: absolute; left: 21%; top: 29%; width: 58%; height: 30%; display: flex; align-items: center; justify-content: center;
+  font: 17px var(--ui); color: #ffb648; opacity: .55; text-shadow: 0 0 5px rgba(255,160,40,.9); }
+button.key:hover .kg { opacity: .85; }
+button.key.lit .kg { opacity: 1; text-shadow: 0 0 6px rgba(255,170,50,1), 0 0 14px rgba(255,140,20,.8); }
+button.key.notify .kg { animation: blink 1s steps(1) infinite; opacity: 1; }
+#menubtns { display: flex; gap: 2px; }
+#menubtns button.key { width: 62px; height: 62px; }
+#menubtns button.key span { display: flex; font-size: 16px; color: #ffb648; }
+#menubtns button.key:hover span { color: #ffb648; }
+
+/* module keys (hotbar): backlit pictogram only */
+#hotbar { display: flex; gap: 2px; }
+#hotbar .slot { width: 64px; height: 64px; border: none; overflow: visible; background: url(assets/ui/key_up.png) center / 100% 100% no-repeat; }
+#hotbar .slot.active { background-image: url(assets/ui/key_down.png); box-shadow: none; }
+#hotbar .slot .key, #hotbar .slot .name { display: none; }
+#hotbar .slot .icon { position: absolute; left: 21%; top: 29%; width: 58%; height: 30%; margin: 0; display: flex; align-items: center; justify-content: center;
+  font-size: 16px; line-height: 1; filter: grayscale(1) sepia(1) saturate(5) hue-rotate(-12deg) brightness(1.1); opacity: .55; }
+#hotbar .slot.active .icon { opacity: 1; filter: grayscale(1) sepia(1) saturate(7) hue-rotate(-12deg) brightness(1.5) drop-shadow(0 0 5px rgba(255,150,30,.9)); }
+#hotbar .slot .cd { left: 21%; width: 58%; bottom: auto; top: 29%; max-height: 30%; background: rgba(0,0,0,.7); }
+#hotbar .slot.empty { opacity: 1; } #hotbar .slot.empty .icon { opacity: 0; }
+
+/* ---- toggles: eggshell switch, amber lamp that flickers on ---- */
+#toggles { gap: 16px; }
+.tgl { pointer-events: auto; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.tgl .tlamp { width: 26px; height: 26px; background: url(assets/ui/lamp_off.png) center / contain no-repeat; }
+.tgl.on .tlamp { background-image: url(assets/ui/lamp_on.png); filter: drop-shadow(0 0 6px rgba(255,170,40,.95)); animation: lampon .45s steps(1) 1, lampbreathe 3.2s ease-in-out .45s infinite; }
+@keyframes lampon { 0% { opacity: 1; } 15% { opacity: .1; } 30% { opacity: .8; } 45% { opacity: .2; } 60% { opacity: 1; } 75% { opacity: .4; } 100% { opacity: 1; } }
+@keyframes lampbreathe { 0%, 100% { filter: drop-shadow(0 0 5px rgba(255,170,40,.85)); } 50% { filter: drop-shadow(0 0 9px rgba(255,170,40,1)); } 93% { opacity: 1; } 94% { opacity: .6; } 95% { opacity: 1; } }
+.tgl .tsw { width: 64px; height: 68px; background: url(assets/ui/toggle_0.png) center / contain no-repeat; }
+
+/* ---- scanner terminal (R) ---- */
+.scan-unit { position: relative; width: 840px; height: 560px; zoom: var(--ui-scale); filter: drop-shadow(0 20px 30px rgba(0,0,0,.8)); }
+#scan-screen { left: 52px; top: 52px; width: 536px; height: 376px; padding: 18px 22px; font-size: 13px; line-height: 1.45; text-transform: uppercase; }
+#scan-screen input { width: 100%; background: transparent; border: none; border-bottom: 1px solid rgba(143,240,255,.4); color: var(--phos);
+  font: 16px var(--ui); text-shadow: 0 0 4px var(--phos); padding: 4px 0; outline: none; text-transform: uppercase; caret-color: var(--phos); }
+#scan-res { margin-top: 10px; height: 290px; overflow: hidden; }
+#scan-res .r { display: flex; justify-content: space-between; gap: 10px; }
+#scan-res .r span:last-child { opacity: .75; }
+.scan-unit button.keybig { position: absolute; z-index: 3; left: 625px; top: 456px; width: 190px; height: 102px; border: none; padding: 0;
+  background: url(assets/ui/keybig_up.png) center / 100% 100% no-repeat; text-shadow: none; }
+.scan-unit button.keybig:hover { background: url(assets/ui/keybig_up.png) center / 100% 100% no-repeat; filter: brightness(1.08); }
+.scan-unit button.keybig:active, .scan-unit button.keybig.down { background-image: url(assets/ui/keybig_down.png); }
+.scan-unit button.keybig .kg { position: absolute; left: 22%; top: 30%; width: 56%; height: 30%; display: flex; align-items: center; justify-content: center;
+  color: #ffb648; font: 22px var(--ui); text-shadow: 0 0 8px rgba(255,150,30,.95); }
+#overlay .scan-unit { margin: auto; }
+
+/* update available: the terminal's third lamp blinks; click to update (the updater sets its text, hidden here) */
+.comms-unit #update-badge { position: absolute; z-index: 3; left: 503px; top: 184px; right: auto; width: 22px; height: 22px; padding: 0; border: none; border-radius: 50%;
+  font-size: 0; color: transparent; text-shadow: none; background: radial-gradient(circle, rgba(255,90,60,1) 0 28%, rgba(255,60,30,.85) 45%, rgba(255,40,0,0) 72%);
+  animation: notelamp .8s steps(1) infinite; }
+.comms-unit #update-badge:hover { background: radial-gradient(circle, rgba(255,140,110,1) 0 30%, rgba(255,60,30,.9) 50%, rgba(255,40,0,0) 74%); }
