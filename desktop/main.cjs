@@ -73,6 +73,7 @@ function createWindow() {
     },
   });
   win.setMenu(null);
+  win.on('close', () => { try { win.webContents.setAudioMuted(true); } catch { /* gone */ } });   // no stuck audio loop while shutting down
   win.loadURL('app://game/index.html');
   win.once('ready-to-show', () => { applyMode(cfg.displayMode); win.show(); win.focus(); });
   win.webContents.on('did-finish-load', () => win.webContents.send('display-mode', cfg.displayMode));
@@ -163,7 +164,7 @@ ipcMain.on('set-display-mode', (_e, mode) => setMode(mode));
 ipcMain.on('set-unlock-fps', (_e, v) => { cfg.unlockFps = !!v; saveCfg(); });
 ipcMain.on('win-min', () => win?.minimize());
 ipcMain.on('win-max', () => { if (!win) return; win.isMaximized() ? win.unmaximize() : win.maximize(); });
-ipcMain.on('win-close', () => win?.close());
+ipcMain.on('win-close', () => { if (!win) return; win.webContents.setAudioMuted(true); win.close(); });
 
 app.on('second-instance', () => { if (win) { if (win.isMinimized()) win.restore(); win.focus(); } });
 
