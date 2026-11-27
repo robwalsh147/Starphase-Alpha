@@ -807,3 +807,18 @@ button.key .kg, button.keybig .kg, #menubtns button.key span { color: var(--g) !
 .tpanel > .lyr.litR { border-image: url(assets/ui/plate9_R.png) 40 fill / 26px round; }
 .tpanel > .lyr.litT { border-image: url(assets/ui/plate9_T.png) 40 fill / 26px round; }
 .tpanel > .lyr.litB { border-image: url(assets/ui/plate9_B.png) 40 fill / 26px round; }
+
+/* scanner terminal: proximity map beside the results */
+.scan-body { display: flex; gap: 14px; margin-top: 10px; }
+#scan-map { width: 300px; height: 300px; flex: 0 0 300px; }
+.scan-dev #scan-res { flex: 1; margin-top: 0; height: 300px; overflow: hidden; font-size: 12px; }
+.scan-screen { width: 720px; height: 440px; }
+
+/* update-notes key, left of the comms terminal */
+#p-comms button.key.mini { position: absolute; left: -40px; bottom: 6px; width: 34px; height: 34px; z-index: 6; pointer-events: auto; }
+#p-comms button.key.mini .kg { font-size: 12px; }
+#update-notes.hover { position: fixed; pointer-events: none; zoom: var(--ui-scale); z-index: 40; }
+#update-notes.hover #un-close { display: none; }
+/* bulge only the terminal text; maps, gauges and the scanner stay true */
+.tscreen .screen > *:not(.crt-skip) { filter: none; }
+#comms, #comms-prompt { filter: url(#crtbulge); }
