@@ -521,3 +521,153 @@ body.ui-adjust .hud-panel.sel { outline: 2px solid var(--amber); }
 #menubtns button.key, #menubtns button.key:hover { width: 46px; height: 46px; padding: 0; border: none; background: url(assets/ui/key_up.png) center / 100% 100% no-repeat; }
 #menubtns button.key:active { background-image: url(assets/ui/key_down.png); }
 #menubtns button.key .kg { font-size: 13px; }
+
+/* ---- sunlight on the hardware (four Blender light layers added on top of the dark base render) ---- */
+.unit .lit { position: absolute; left: 0; top: 0; z-index: 2; pointer-events: none; mix-blend-mode: plus-lighter; }
+.lit.litL { opacity: var(--lL, 0); } .lit.litR { opacity: var(--lR, 0); } .lit.litT { opacity: var(--lT, 0); } .lit.litB { opacity: var(--lB, 0); }
+.strip { position: relative; }
+.strip > .slit { position: absolute; inset: -30px; border-style: solid; border-width: 30px; border-color: transparent; pointer-events: none; mix-blend-mode: plus-lighter; z-index: 0; }
+.strip > .slit.litL { border-image: url(assets/ui/strip_L.png) 40 fill / 30px stretch; }
+.strip > .slit.litR { border-image: url(assets/ui/strip_R.png) 40 fill / 30px stretch; }
+.strip > .slit.litT { border-image: url(assets/ui/strip_T.png) 40 fill / 30px stretch; }
+.strip > .slit.litB { border-image: url(assets/ui/strip_B.png) 40 fill / 30px stretch; }
+.strip > :not(.slit) { position: relative; z-index: 1; }
+.unit .note-lamp, .unit #update-badge { z-index: 3; }
+/* small parts: darker, with a sun-side highlight falling off to shadow */
+button.key, #hotbar .slot, .tgl .tsw { position: relative; filter: brightness(.62); }
+button.key::after, #hotbar .slot::after, .tgl .tsw::after { content: ''; position: absolute; inset: 0; pointer-events: none; mix-blend-mode: soft-light;
+  background: linear-gradient(var(--sunAng, 135deg), rgba(255,244,225,.75) 0%, rgba(255,240,220,0) 45%, rgba(0,0,0,.7) 100%); }
+#hotbar .slot.active { filter: brightness(.85); }
+
+/* keypad tiles: printed pictograms */
+#hotbar .slot .icon { left: 16%; top: 16%; width: 68%; height: 68%; font-size: 0; opacity: .92; filter: none; }
+#hotbar .slot .icon svg { width: 100%; height: 100%; display: block; }
+#hotbar .slot.active .icon { opacity: 1; filter: none; }
+#hotbar .slot.empty .icon { opacity: 0; }
+
+/* =====================================================================================
+   THIN BEZELS (v0.52): screens and panels framed by a thin rendered bezel (assets/ui/frame9.png, 9-slice),
+   shaded by the sun's direction. Everything darker.
+   ===================================================================================== */
+.tscreen, .tpanel { position: relative; }
+.tscreen .screen { position: absolute; inset: 4px; }
+.tbez { position: absolute; inset: 0; z-index: 5; pointer-events: none; border-style: solid; border-width: 7px; border-color: transparent;
+  border-image: url(assets/ui/frame9.png) 12 / 7px stretch; filter: brightness(.75); }
+.tbez::after { content: ''; position: absolute; inset: -7px; padding: 7px; box-sizing: border-box; mix-blend-mode: soft-light;
+  background: linear-gradient(var(--sunAng, 135deg), rgba(255,240,215,.8) 0%, rgba(255,240,215,0) 45%, rgba(0,0,0,.75) 100%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude; }
+.gauge-screen { width: 248px; height: 248px; }
+#status-screen { padding: 0; display: block; }
+#status-screen canvas { display: block; width: 240px; height: 240px; pointer-events: auto; }
+#gauge-tip { display: none; position: absolute; z-index: 6; padding: 0 6px; font-size: 18px; color: var(--phos); background: #010302; border: 1px solid rgba(141,255,168,.4); pointer-events: none; }
+.comms-screen { width: 380px; height: 220px; }
+#comms-screen { padding: 12px 14px; }
+.comms-screen .note-lamp { left: auto; right: 14px; top: auto; bottom: 1px; width: 6px; height: 4px; border-radius: 1px; z-index: 6; background: #2a1a08; }
+.comms-screen .note-lamp.on { background: #ffb040; box-shadow: 0 0 6px #ff9a20; }
+.comms-screen #update-badge { left: auto; right: 24px; top: auto; bottom: 1px; width: 6px; height: 4px; border-radius: 1px; z-index: 6; background: #ff4a2a; box-shadow: 0 0 6px #ff3010; }
+.tpanel { padding: 12px 14px; background: url(assets/ui/glass_grime.png) center / 200px, linear-gradient(180deg, #17150f, #0d0c09); }
+.tpanel > :not(.tbez) { position: relative; z-index: 1; }
+.console { display: flex; align-items: center; gap: 14px; }
+.console #toggles { border-right-color: rgba(0,0,0,.6); }
+/* scanner terminal */
+.scan-dev { display: flex; flex-direction: column; align-items: stretch; gap: 0; zoom: var(--ui-scale); }
+.scan-screen { width: 600px; height: 400px; }
+.scan-dev #scan-screen { padding: 18px 22px; font-size: 13px; line-height: 1.45; text-transform: uppercase; }
+.scan-keys { display: flex; justify-content: flex-end; padding: 8px 12px; }
+.scan-keys button.keybig { position: relative; left: auto; top: auto; width: 150px; height: 80px; border: none; padding: 0; background: url(assets/ui/keybig_up.png) center / 100% 100% no-repeat; filter: brightness(.65); }
+.scan-keys button.keybig:hover { background: url(assets/ui/keybig_up.png) center / 100% 100% no-repeat; filter: brightness(.75); }
+.scan-keys button.keybig:active { background-image: url(assets/ui/keybig_down.png); }
+.scan-keys button.keybig .kg { position: absolute; left: 22%; top: 30%; width: 56%; height: 30%; display: flex; align-items: center; justify-content: center; color: #ffb648; font: 20px var(--ui); text-shadow: 0 0 8px rgba(255,150,30,.95); }
+
+/* everything that used to pop up on the view now reads out on the terminal */
+#center-msg, #dock-prompt { display: none !important; }
+#comms-screen { display: flex; flex-direction: column; }
+#comms { flex: 1; min-height: 0; }
+#comms .msg.sys { color: var(--phos); opacity: .85; font-size: 11px; letter-spacing: 1.5px; }
+#comms .msg.sys::before { content: '> '; opacity: .6; }
+#comms-prompt { height: 16px; margin-top: 6px; padding-top: 4px; border-top: 1px dashed rgba(141,255,168,.25); font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--phos); }
+#comms-prompt b { color: #000; background: #ffb040; padding: 0 5px; margin-right: 6px; font-weight: 400; text-shadow: none; }
+
+/* dark cabin: the glass shows only a small specular pip toward the sun and a faint sheen */
+.screen::after { inset: 0; background:
+    radial-gradient(circle at var(--gx, 30%) var(--gy, 22%), rgba(255,255,245,.32) 0, rgba(255,255,240,.08) 1.6%, transparent 3.5%),
+    radial-gradient(ellipse 45% 30% at var(--gx, 30%) var(--gy, 22%), rgba(220,235,230,.035), transparent 70%); }
+.screen::before { opacity: .55; }
+
+/* thin-bezel screens fill their frame (overrides the old big-unit coordinates) */
+.tscreen #comms-screen, .tscreen #status-screen, .tscreen #scan-screen { left: 4px; top: 4px; right: 4px; bottom: 4px; width: auto; height: auto; }
+
+#comms .msg .who::before { content: 'C2 '; }
+#comms .msg .who .garble { opacity: .8; letter-spacing: 1px; text-shadow: 1px 0 rgba(255,80,80,.5), -1px 0 rgba(80,200,255,.5); animation: garble .18s steps(2) infinite; }
+@keyframes garble { 0% { transform: translateX(0); } 50% { transform: translateX(1px); opacity: .55; } 100% { transform: translateX(-1px); } }
+
+/* =====================================================================================
+   SUNLIT HARDWARE (v0.52): dark base renders + four directional light renders per part, added with
+   plus-lighter and weighted by the sun (--lL/--lR/--lT/--lB). Replaces the old CSS gradient shading.
+   ===================================================================================== */
+.lyr { position: absolute; inset: 0; pointer-events: none; mix-blend-mode: plus-lighter; background-size: 100% 100%; background-repeat: no-repeat; z-index: 0; }
+.lyr.litL { opacity: var(--lL, 0); } .lyr.litR { opacity: var(--lR, 0); } .lyr.litT { opacity: var(--lT, 0); } .lyr.litB { opacity: var(--lB, 0); }
+button.key, #hotbar .slot, .tgl .tsw, button.keybig { filter: none !important; }
+button.key::after, #hotbar .slot::after, .tgl .tsw::after, .tbez::after { display: none !important; }
+button.key .kg, #hotbar .slot .icon, button.keybig .kg { z-index: 1; }
+button.key > .lyr.litL { background-image: url(assets/ui/key_up_L.png); }
+button.key > .lyr.litR { background-image: url(assets/ui/key_up_R.png); }
+button.key > .lyr.litT { background-image: url(assets/ui/key_up_T.png); }
+button.key > .lyr.litB { background-image: url(assets/ui/key_up_B.png); }
+button.key.down > .lyr.litL { background-image: url(assets/ui/key_down_L.png); }
+button.key.down > .lyr.litR { background-image: url(assets/ui/key_down_R.png); }
+button.key.down > .lyr.litT { background-image: url(assets/ui/key_down_T.png); }
+button.key.down > .lyr.litB { background-image: url(assets/ui/key_down_B.png); }
+button.key.down, button.key:active { background-image: url(assets/ui/key_down.png) !important; }
+button.keybig > .lyr.litL { background-image: url(assets/ui/keybig_up_L.png); }
+button.keybig > .lyr.litR { background-image: url(assets/ui/keybig_up_R.png); }
+button.keybig > .lyr.litT { background-image: url(assets/ui/keybig_up_T.png); }
+button.keybig > .lyr.litB { background-image: url(assets/ui/keybig_up_B.png); }
+button.keybig.down > .lyr.litL { background-image: url(assets/ui/keybig_down_L.png); }
+button.keybig.down > .lyr.litR { background-image: url(assets/ui/keybig_down_R.png); }
+button.keybig.down > .lyr.litT { background-image: url(assets/ui/keybig_down_T.png); }
+button.keybig.down > .lyr.litB { background-image: url(assets/ui/keybig_down_B.png); }
+button.keybig.down { background-image: url(assets/ui/keybig_down.png) !important; }
+#hotbar .slot > .lyr.litL { background-image: url(assets/ui/tile_off_L.png); }
+#hotbar .slot > .lyr.litR { background-image: url(assets/ui/tile_off_R.png); }
+#hotbar .slot > .lyr.litT { background-image: url(assets/ui/tile_off_T.png); }
+#hotbar .slot > .lyr.litB { background-image: url(assets/ui/tile_off_B.png); }
+#hotbar .slot.active > .lyr.litL { background-image: url(assets/ui/tile_lit_L.png); }
+#hotbar .slot.active > .lyr.litR { background-image: url(assets/ui/tile_lit_R.png); }
+#hotbar .slot.active > .lyr.litT { background-image: url(assets/ui/tile_lit_T.png); }
+#hotbar .slot.active > .lyr.litB { background-image: url(assets/ui/tile_lit_B.png); }
+.tgl .tsw[data-f="0"] { background-image: url(assets/ui/toggle_0.png); }
+.tgl .tsw[data-f="0"] > .lyr.litL { background-image: url(assets/ui/toggle_0_L.png); }
+.tgl .tsw[data-f="0"] > .lyr.litR { background-image: url(assets/ui/toggle_0_R.png); }
+.tgl .tsw[data-f="0"] > .lyr.litT { background-image: url(assets/ui/toggle_0_T.png); }
+.tgl .tsw[data-f="0"] > .lyr.litB { background-image: url(assets/ui/toggle_0_B.png); }
+.tgl .tsw[data-f="1"] { background-image: url(assets/ui/toggle_1.png); }
+.tgl .tsw[data-f="1"] > .lyr.litL { background-image: url(assets/ui/toggle_1_L.png); }
+.tgl .tsw[data-f="1"] > .lyr.litR { background-image: url(assets/ui/toggle_1_R.png); }
+.tgl .tsw[data-f="1"] > .lyr.litT { background-image: url(assets/ui/toggle_1_T.png); }
+.tgl .tsw[data-f="1"] > .lyr.litB { background-image: url(assets/ui/toggle_1_B.png); }
+.tgl .tsw[data-f="2"] { background-image: url(assets/ui/toggle_2.png); }
+.tgl .tsw[data-f="2"] > .lyr.litL { background-image: url(assets/ui/toggle_2_L.png); }
+.tgl .tsw[data-f="2"] > .lyr.litR { background-image: url(assets/ui/toggle_2_R.png); }
+.tgl .tsw[data-f="2"] > .lyr.litT { background-image: url(assets/ui/toggle_2_T.png); }
+.tgl .tsw[data-f="2"] > .lyr.litB { background-image: url(assets/ui/toggle_2_B.png); }
+.tgl .tsw[data-f="3"] { background-image: url(assets/ui/toggle_3.png); }
+.tgl .tsw[data-f="3"] > .lyr.litL { background-image: url(assets/ui/toggle_3_L.png); }
+.tgl .tsw[data-f="3"] > .lyr.litR { background-image: url(assets/ui/toggle_3_R.png); }
+.tgl .tsw[data-f="3"] > .lyr.litT { background-image: url(assets/ui/toggle_3_T.png); }
+.tgl .tsw[data-f="3"] > .lyr.litB { background-image: url(assets/ui/toggle_3_B.png); }
+.tgl .tsw[data-f="4"] { background-image: url(assets/ui/toggle_4.png); }
+.tgl .tsw[data-f="4"] > .lyr.litL { background-image: url(assets/ui/toggle_4_L.png); }
+.tgl .tsw[data-f="4"] > .lyr.litR { background-image: url(assets/ui/toggle_4_R.png); }
+.tgl .tsw[data-f="4"] > .lyr.litT { background-image: url(assets/ui/toggle_4_T.png); }
+.tgl .tsw[data-f="4"] > .lyr.litB { background-image: url(assets/ui/toggle_4_B.png); }
+.tgl .tsw:not([data-f]) > .lyr.litL { background-image: url(assets/ui/toggle_0_L.png); }
+.tgl .tsw:not([data-f]) > .lyr.litR { background-image: url(assets/ui/toggle_0_R.png); }
+.tgl .tsw:not([data-f]) > .lyr.litT { background-image: url(assets/ui/toggle_0_T.png); }
+.tgl .tsw:not([data-f]) > .lyr.litB { background-image: url(assets/ui/toggle_0_B.png); }
+.tbez > .lyr { inset: -7px; border-style: solid; border-width: 7px; border-color: transparent; background: none; }
+.tbez > .lyr.litL { border-image: url(assets/ui/frame9_L.png) 12 / 7px stretch; }
+.tbez > .lyr.litR { border-image: url(assets/ui/frame9_R.png) 12 / 7px stretch; }
+.tbez > .lyr.litT { border-image: url(assets/ui/frame9_T.png) 12 / 7px stretch; }
+.tbez > .lyr.litB { border-image: url(assets/ui/frame9_B.png) 12 / 7px stretch; }
+.tbez { filter: none; }

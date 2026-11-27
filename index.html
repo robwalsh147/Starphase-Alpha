@@ -31,9 +31,9 @@
        Every .hud-panel is movable / scalable in Adjust UI (src/layout.js). No labels on anything. -->
   <div class="hud-panel" id="p-comms" data-title="Comms">
     <button class="mm" title="Minimize">−</button>
-    <div class="pbody unit comms-unit">
-      <div class="screen phos-green" id="comms-screen"><div id="comms"></div></div>
-      <img class="shell" src="assets/ui/comms_unit.png" alt="" draggable="false">
+    <div class="pbody tscreen comms-screen">
+      <div class="screen phos-green" id="comms-screen"><div id="comms"></div><div id="comms-prompt"></div></div>
+      <div class="tbez"></div>
       <div class="note-lamp" id="note-lamp" title=""></div>
       <button id="update-badge" class="hidden"></button>
     </div>
@@ -41,21 +41,17 @@
 
   <div class="hud-panel" id="p-gauge" data-title="Ship">
     <button class="mm" title="Minimize">−</button>
-    <div class="pbody unit status-unit">
-      <div class="screen phos-green" id="status-screen">
-        <div class="sbar" data-k="shield" data-icon="&#9960;"><div class="strack"><div class="sfill"></div></div><span class="sval"></span></div>
-        <div class="sbar" data-k="armor" data-icon="&#9638;"><div class="strack"><div class="sfill"></div></div><span class="sval"></span></div>
-        <div class="sbar" data-k="hull" data-icon="&#11042;"><div class="strack"><div class="sfill"></div></div><span class="sval"></span></div>
-        <div class="sbar" data-k="power" data-icon="&#989;"><div class="strack"><div class="sfill"></div></div><span class="sval"></span></div>
-      </div>
-      <img class="shell" src="assets/ui/status_unit.png" alt="" draggable="false">
+    <div class="pbody tscreen gauge-screen">
+      <div class="screen phos-green" id="status-screen"><canvas id="radial" width="240" height="240"></canvas><div id="gauge-tip"></div></div>
+      <div class="tbez"></div>
     </div>
   </div>
 
   <!-- main console: switches on the left, menu keys top-left over the 1–0 module tiles -->
   <div class="hud-panel" id="p-hotbar" data-title="Console">
     <button class="mm" title="Minimize">−</button>
-    <div class="pbody strip console">
+    <div class="pbody tpanel console">
+      <div class="tbez"></div>
       <div id="toggles">
         <div class="tgl" id="tgl-ping"><div class="tlamp"></div><div class="tsw"></div></div>
         <div class="tgl" id="tgl-light"><div class="tlamp"></div><div class="tsw"></div></div>
