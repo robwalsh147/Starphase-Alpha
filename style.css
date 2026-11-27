@@ -99,11 +99,11 @@ body.ui-adjust .grip { display: block; }
 #overlay { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 10;
   background: radial-gradient(ellipse at center, rgba(10,25,50,.6), rgba(0,0,0,.85)); pointer-events: auto; }
 .dialog { position: relative; width: 780px; max-width: 94vw; max-height: 92vh; overflow: auto; padding: 20px 24px; isolation: isolate; }
-.dialog::before, .dialog::after { content: ''; position: absolute; z-index: -1;
-  clip-path: polygon(18px 0, 100% 0, 100% calc(100% - 18px), calc(100% - 18px) 100%, 0 100%, 0 18px); }
-.dialog::before { inset: 0; background: linear-gradient(135deg, var(--edge), var(--edge-dim) 35%, var(--edge-dim) 65%, var(--edge)); }
-.dialog::after { inset: 1px; background: repeating-linear-gradient(0deg, rgba(120,190,255,.03) 0 1px, transparent 1px 3px),
-  linear-gradient(180deg, rgba(20,46,84,.96), rgba(4,10,22,.97)); }
+.dialog { border: 1px solid transparent;   /* frame drawn on the box itself so it covers the whole panel while scrolling */
+  clip-path: polygon(18px 0, 100% 0, 100% calc(100% - 18px), calc(100% - 18px) 100%, 0 100%, 0 18px);
+  background: repeating-linear-gradient(0deg, rgba(120,190,255,.03) 0 1px, transparent 1px 3px) padding-box,
+    linear-gradient(180deg, rgba(20,46,84,.96), rgba(4,10,22,.97)) padding-box,
+    linear-gradient(135deg, var(--edge), var(--edge-dim) 35%, var(--edge-dim) 65%, var(--edge)) border-box; }
 .dialog h1 { margin: 0 0 4px; font-family: var(--title); font-weight: 700; font-size: calc(22px * var(--fs, 1)); letter-spacing: 5px; color: var(--amber);
   text-shadow: 0 0 10px rgba(255,150,40,.7); }
 .dialog h1.logo { font-size: clamp(18px, 5.5vw, 34px); letter-spacing: clamp(3px, 1.2vw, 8px); background: linear-gradient(180deg, #ffffff, #a8d8ff 45%, #2a6ab8 55%, #d8f0ff);
