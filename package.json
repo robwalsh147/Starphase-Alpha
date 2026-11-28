@@ -1,6 +1,6 @@
 {
   "name": "starphase-alpha",
-  "version": "0.56.0",
+  "version": "0.56.1",
   "description": "Starphase Alpha — isometric space extraction shooter",
   "scripts": {
     "start": "python -m http.server 5173 --bind 127.0.0.1",
